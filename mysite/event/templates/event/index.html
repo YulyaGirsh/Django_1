@@ -1,0 +1,9 @@
+{% extends 'event/base.html' %}
+{% block content %}
+<h1>{{ title }}</h1>
+<ul>
+    {% for i in post %}
+    <h3> {{i.title }}</h3>
+    {% endfor %}
+</ul>
+{% endblock %}

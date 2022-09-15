@@ -1,13 +1,21 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseNotFound, Http404
+from .models import *
+
+menu = ['О сайте', 'Добавить статью', 'Обратная связь', 'Войти']
 
 
 def index(request):
-    return HttpResponse('Страница приложения мероприятий')
+    post = Events.objects.all()
+    return render(request, 'event/index.html', {'title': 'Главная страница', 'menu': menu, 'post':post})
 
 
 def category(request, catid):
     return HttpResponse(f'<h1>Страница категорий</h1><p>{catid}</p>')
+
+
+def about(request):
+    return render(request, 'event/about.html', {'title': 'Информация о сайте', 'menu': menu})
 
 
 def archive(request, year):
