@@ -2,8 +2,39 @@
 {% block content %}
 <h1>{{ title }}</h1>
 <ul>
-    {% for i in post %}
-    <h3> {{i.title }}</h3>
-    {% endfor %}
+    <td valign="top" class="left-chapters">
+        <ul id="leftachapters">
+            {% if area_selected == 0 %}
+            <li class="selected">Весь мир</li>
+            {% else %}
+            <li><a href="{%url 'home'%}">Весь мир</a></li>
+            {% endif %}
+            {% for c in area %}
+            {% if c.pk == area_selected %}
+            <li class="selected">{{c.name}}</li>
+            {% else %}
+            <li><a href="{%url 'area' c.pk %}">{{c.name}}</a></li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </td>
+    <ul class="list-articles">
+        {% for i in post %}
+        <li>
+            <div class="article-panel">
+                <p class="first">Категория: {{i.cat}}</p>
+                <p class="last">Дата :{{i.time_update|date:"d-m-Y H:i:s"}}</p>
+            </div>
+            {% if i.photo %}
+            <p><img class="img-article-left thumb" src="{{i.photo.url}}"></p>
+            {% endif %}
+            <h3> {{i.title }}</h3>
+            <h5> {{i.content|linebreaks|truncatewords:50 }}</h5>
+            <div class="clear"></div>
+            <p class="link-read-post"><a href="{{ i.get_absolute_url }}">Читать далее</a></p>
+        </li>
+        {% endfor %}
+    </ul>
+
 </ul>
 {% endblock %}
