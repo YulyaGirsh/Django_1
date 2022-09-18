@@ -1,0 +1,7 @@
+{% for c in area %}
+    {% if c.pk == area_selected %}
+        <li class="selected">{{c.name}}</li>
+    {% else %}
+        <li><a href="{%url 'area' c.pk %}">{{c.name}}</a></li>
+    {% endif %}
+{% endfor %}

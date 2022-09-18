@@ -10,10 +10,8 @@ menu = [{'title': 'О сайте', 'url_name': 'about'}, {'title': 'Регист
 
 def index(request):
     post = Events.objects.all()
-    area = Area.objects.all()
     context = {'title': 'Главная страница',
                'menu': menu, 'post': post,
-               'area': area,
                'area_selected': 0}
 
     return render(request, 'event/index.html', context)
@@ -25,11 +23,9 @@ def area(request, area_id):
 
 def category(request, area_id):
     post = Events.objects.filter(cat_id=area_id)
-    area = Area.objects.all()
     context = {'title': 'Отображение по рубрикам',
                'menu': menu,
                'post': post,
-               'area': area,
                'area_selected': area_id}
     return render(request, 'event/index.html', context=context)
 
