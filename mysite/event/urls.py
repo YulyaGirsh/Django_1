@@ -9,6 +9,6 @@ urlpatterns = [
     path('contact/', contact, name='contact'),
     path('login', login, name='login'),
     path('about', about, name='about'),
-    path('post/<int:post_id>/', post, name='post'),
-    path('area/<int:area_id>/', category, name='area'),
+    path('post/<slug:post_slug>/', post, name='post'),
+    path('area/<slug:area_slug>/', category, name='area'),
 ]

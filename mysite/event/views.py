@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from .models import *
 
@@ -21,17 +21,28 @@ def area(request, area_id):
     return HttpResponse(f'<h1>Страница категорий</h1><p>{area_id}</p>')
 
 
-def category(request, area_id):
-    post = Events.objects.filter(cat_id=area_id)
+def category(request, area_slug):
+    ident_area = Area.objects.get(slug=area_slug)
+    post = Events.objects.filter(cat_id=ident_area.pk)
     context = {'title': 'Отображение по рубрикам',
                'menu': menu,
                'post': post,
-               'area_selected': area_id}
+               'area_selected': area_slug}
     return render(request, 'event/index.html', context=context)
 
 
-def post(request, post_id):
-    return HttpResponse(f'Пост с идентификатором:{post_id}')
+def post(request, post_slug):
+    our_post = Events.objects.filter(slug=post_slug)
+    post = get_object_or_404(Events, slug=post_slug)
+    our_area = Area.objects.filter(pk=post.cat_id)
+    context = {'title': post.title,
+               'menu': menu,
+               'post': post,
+               'area_selected': post.cat_id,
+               'content': post.content,
+               'area_slug': our_area
+               }
+    return render(request, 'event/post.html', context=context)
 
 
 def contact(request):

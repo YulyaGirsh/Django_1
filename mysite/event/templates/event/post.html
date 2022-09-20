@@ -1,0 +1,10 @@
+{% extends 'event/base.html' %}
+{% block content %}
+<h1>{{ title }}</h1>
+
+{% if post.photo %}
+<p><img class="img-article-left thumb" src="{{i.photo.url}}"></p>
+{% endif %}
+<h5> {{content|linebreaks }}</h5>
+<p class="link-read-post"><a href="{% url 'home' %}">Назад</a></p>
+{% endblock %}
