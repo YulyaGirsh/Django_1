@@ -1,0 +1,23 @@
+{% extends 'event/index.html' %}
+
+{% block content %}
+<h1>{{ title}}<h1/>
+    <form action="{% url 'add' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-error">{{ post.non_field_errors }}</div>
+        <p><label class="form-label" for="{{ post.title.id_for_label }}">{{ post.title.label}}:</label> {{post.title}}
+        </p>
+        <div class="form-error">{{form.title.errors}}</div>
+        <p><label class="form-label" for="{{ post.slug.id_for_label }}">{{ post.slug.label}}:</label> {{post.slug}}</p>
+        <div class="form-error">{{form.slug.errors}}</div>
+        <p><label class="form-label" for="{{ post.content.id_for_label }}">{{ post.content.label}}:</label>
+            {{post.content}}</p>
+        <div class="form-error">{{form.content.errors}}</div>
+        <p><label class="form-label" for="{{ post.is_published.id_for_label }}">{{ post.is_published.label}}:</label>
+            {{post.is_published}}</p>
+        <div class="form-error">{{form.is_published.errors}}</div>
+        <p><label class="form-label" for="{{ post.cat.id_for_label }}">{{ post.cat.label}}:</label> {{post.cat}}</p>
+        <div class="form-error">{{form.cat.errors}}</div>
+        <button type="submit">Добавить</button>
+    </form>
+{% endblock %}

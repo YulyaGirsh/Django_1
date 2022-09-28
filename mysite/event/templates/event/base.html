@@ -9,16 +9,18 @@
 <body>
 {% block mainmenu %}{% endblock %}
 <td valign="top">
-<div class="header">
-    <li class="logo"><a href="{% url 'home'%}"></a><li/>
-    {% for m in menu %}
-        {% if not forloop.last %}
-        <li class="first"><a href="{% url m.url_name %}"> {{ m.title }}</a></li>
-        {% else %}
-        <li class="last"><a href="{% url m.url_name %}"> {{ m.title }}</a></li>
-        {% endif %}
-        {% endfor %}
-<div/>
+    <div class="header">
+        <div class="row:3">
+            <!--    <li class="logo"><a href="{% url 'home'%}"></a><li/>-->
+            {% for m in menu %}
+            {% if not forloop.last %}
+            <div class="first"><a href="{% url m.url_name %}"> {{ m.title }}</a></div>
+            {% else %}
+            <div class="last"><a href="{% url m.url_name %}"> {{ m.title }}</a></div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    <div/>
 {% block content %} {% endblock %}
 </body>
 </html>

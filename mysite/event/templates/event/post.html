@@ -3,8 +3,8 @@
 <h1>{{ title }}</h1>
 
 {% if post.photo %}
-<p><img class="img-article-left thumb" src="{{i.photo.url}}"></p>
+<p><img class="img-article-left thumb" src="{{post.photo.url}}"></p>
 {% endif %}
-<h5> {{content|linebreaks }}</h5>
+<h5> {{post.content|linebreaks }}</h5>
 <p class="link-read-post"><a href="{% url 'home' %}">Назад</a></p>
 {% endblock %}
