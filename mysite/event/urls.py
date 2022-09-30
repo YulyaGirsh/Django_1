@@ -11,5 +11,5 @@ urlpatterns = [
     path('about', about, name='about'),
     path('post/<slug:post_slug>/', ShowPost.as_view(), name='post'),
     path('area/<slug:area_slug>/', CategoryShow.as_view(), name='area'),
-    path('add/', AddPost.as_view(), name='add'),
+    path('add/', add_post, name='add'),
 ]

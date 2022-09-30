@@ -10,7 +10,15 @@
             {% else %}
             <li><a href="{%url 'home'%}">Весь мир</a></li>
             {% endif %}
-            {% show_areas  '-name'  area_selected %}
+            {% for i in cats %}
+            {% if i.events__count > 0 %}
+                {% if i.pk == area_selected %}
+            <li class="selected">{{ i.name }}</li>
+            {% else %}
+            <li><a href="{{i.get_absolute_url }}">{{ i.name }}</a> </li>
+            {% endif %}
+            {% endif %}
+            {% endfor %}
         </ul>
 
     </td>
