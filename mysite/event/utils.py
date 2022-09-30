@@ -2,9 +2,7 @@ from django.db.models import Count
 
 from .models import *
 
-menu = [{'title': 'Главная', 'url_name': 'home'}, {'title': 'О сайте', 'url_name': 'about'}, {'title':
-                                                                                                  'Регистрация',
-                                                                                              'url_name': 'login'},
+menu = [{'title': 'Главная', 'url_name': 'home'}, {'title': 'О сайте', 'url_name': 'about'},
         {'title':
              'Добавление записи',
          'url_name':
@@ -12,6 +10,7 @@ menu = [{'title': 'Главная', 'url_name': 'home'}, {'title': 'О сайт�
 
 
 class DataMixin:
+    paginate_by = 5
     def get_user_context(self, **kwargs):
         cats = Area.objects.annotate(Count('events'))
 

@@ -1,15 +1,16 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseNotFound, Http404
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 from .utils import *
 from .forms import *
 from .models import *
 
-menu = [{'title': 'Главная', 'url_name': 'home'}, {'title': 'О сайте', 'url_name': 'about'}, {'title':
-                                                                                                  'Регистрация',
-                                                                                              'url_name': 'login'},
+menu = [{'title': 'Главная', 'url_name': 'home'}, {'title': 'О сайте', 'url_name': 'about'},
         {'title':
              'Добавление записи',
          'url_name':
@@ -17,6 +18,7 @@ menu = [{'title': 'Главная', 'url_name': 'home'}, {'title': 'О сайт�
 
 
 class EventsHome(DataMixin, ListView):
+    paginate_by = 3
     model = Events
     template_name = 'event/index.html'
     context_object_name = 'post'
@@ -57,6 +59,7 @@ def add_post(request, ):
     context = {'post': form, 'menu': menu, 'title': 'Добавление информации о новом фестивале'}
     return render(request, 'event/add_post.html', context=context)
 
+
 class CategoryShow(DataMixin, ListView):
     model = Events
     template_name = 'event/index.html'
@@ -85,23 +88,18 @@ class ShowPost(DataMixin, DetailView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title=context['post'])
-        # context['title'] = context['post']
-        # context['menu'] = menu
         return dict(list(context.items()) + list(c_def.items()))
 
 
-# def post(request, post_slug):
-#     our_post = Events.objects.filter(slug=post_slug)
-#     post = get_object_or_404(Events, slug=post_slug)
-#     our_area = Area.objects.filter(pk=post.cat_id)
-#     context = {'title': post.title,
-#                'menu': menu,
-#                'post': post,
-#                'area_selected': post.cat_id,
-#                'content': post.content,
-#                'area_slug': our_area
-#                }
-#     return render(request, 'event/post.html', context=context)
+class RegisterUser(DataMixin, CreateView):
+    form_class = RegisterUserForm
+    template_name = 'event/register.html'
+    success_url = reverse_lazy('login')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Регистрация')
+        return dict(list(context.items()) + list(c_def.items()))
 
 
 def contact(request):
@@ -124,3 +122,7 @@ def archive(request, year):
 
 def pageNotFound(request, exception):
     return HttpResponseNotFound('Страница не найдена')
+
+
+def register(request):
+    pass

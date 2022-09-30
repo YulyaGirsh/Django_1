@@ -7,9 +7,10 @@ urlpatterns = [
     path('cats/<int:catid>/', CategoryShow.as_view() ),
     re_path(r'^archive/(?P<year>[0-9]{4})/', archive, name='year'),
     path('contact/', contact, name='contact'),
-    path('login', login, name='login'),
+    path('login', RegisterUser.as_view(), name='login'),
     path('about', about, name='about'),
     path('post/<slug:post_slug>/', ShowPost.as_view(), name='post'),
     path('area/<slug:area_slug>/', CategoryShow.as_view(), name='area'),
     path('add/', add_post, name='add'),
+    path('register/', RegisterUser.as_view(), name='register'),
 ]

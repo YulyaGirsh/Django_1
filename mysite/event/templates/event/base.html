@@ -7,21 +7,61 @@
     <link type="text/css" href="{% static 'event/css/styles.css' %}" rel="stylesheet">
 </head>
 <body>
-{% block mainmenu %}{% endblock %}
+{% block mainmenu %}
 <td valign="top">
     <div class="header">
-        <div class="row:3">
-            <!--    <li class="logo"><a href="{% url 'home'%}"></a><li/>-->
+        <ul id="mainmenu" class="mainmenu">
+            <li class="logo"><a href="{% url 'home'%}"></a>
+            <li/>
             {% for m in menu %}
-            {% if not forloop.last %}
-            <div class="first"><a href="{% url m.url_name %}"> {{ m.title }}</a></div>
-            {% else %}
-            <div class="last"><a href="{% url m.url_name %}"> {{ m.title }}</a></div>
+            <li><a href="{% url m.url_name %}">{{ m.title }}</a></li>
+            {% endfor %}
+            <li class="last"><a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login' %}">Войти</a>
+            </li>
+        </ul>
+    <div/>
+    {% endblock mainmenu %}
+    {% block content %} {% endblock %}
+    {% if page_obj.has_other_pages %}
+    <nav class="list-pages">
+        <ul>
+            {% if page_obj.has_previous %}
+            <li class="page-num">
+                <a href="?page={{page_obj.previous_page_number }}">&lt;</a>
+            </li>
+            {% endif %}
+            {% for m in paginator.page_range %}
+            {% if page_obj.number == m %}
+            <li class="page-num page-num-selected">{{ m }}</li>
+            {% elif m >= page_obj.number|add:-2 and m <= page_obj.number|add:2 %}
+            <li class="page-num">
+                <a href="?page={{m}}">{{ m }}</a>
+            </li>
             {% endif %}
             {% endfor %}
-        </div>
-    <div/>
-{% block content %} {% endblock %}
+            {% if page_obj.has_next %}
+            <li class="page-num">
+                <a href="?page={{page_obj.next_page_number }}">&gt;</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+    <!--{% if page_obj.has_another_pages %}-->
+    <!--<nav aria-label="...">-->
+    <!--    <ul class="pagination pagination-lg">-->
+    <!--        {% for m in paginator.page_range %}-->
+    <!--            {% if page_obj.number == m %}-->
+    <!--                <li class="page-item active" aria-current="page">-->
+    <!--                <span class="page-link">{{ m }}</span>-->
+    <!--                </li>-->
+    <!--            {% else %}-->
+    <!--                <li class="page-item"><a class="page-link" href="?page={{m}}">{{ m }}</a></li>-->
+    <!--            {% endif %}-->
+    <!--        {% endfor %}-->
+    <!--    </ul>-->
+    <!--</nav>-->
+    <!--{% endif %}-->
 </body>
 </html>
 
