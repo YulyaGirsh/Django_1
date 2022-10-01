@@ -16,7 +16,7 @@ class DataMixin:
 
         user_menu = menu.copy()
         if not self.request.user.is_authenticated:
-            user_menu.pop(3)
+            user_menu.pop(2)
         context = kwargs
         context['menu'] = user_menu
         context['title'] = 'Главная страница'
