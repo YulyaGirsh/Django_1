@@ -1,12 +1,14 @@
 from django.contrib import admin
 from django.urls import path, re_path
+from django.views.decorators.cache import cache_page
+
 from .views import *
 
 urlpatterns = [
     path('', EventsHome.as_view(), name='home'),
-    path('cats/<int:catid>/', CategoryShow.as_view() ),
+    path('cats/<int:catid>/', CategoryShow.as_view()),
     re_path(r'^archive/(?P<year>[0-9]{4})/', archive, name='year'),
-    path('contact/', contact, name='contact'),
+    path('contact/', ContactFormView.as_view(), name='contact'),
     path('login', LoginUser.as_view(), name='login'),
     path('about', about, name='about'),
     path('post/<slug:post_slug>/', ShowPost.as_view(), name='post'),

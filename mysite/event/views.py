@@ -7,12 +7,12 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, FormView
 from .utils import *
 from .forms import *
 from .models import *
 
-menu = [{'title': 'Главная', 'url_name': 'home'}, {'title': 'О сайте', 'url_name': 'about'},
+menu = [{'title': 'Главная', 'url_name': 'home'}, {'title': 'О сайте', 'url_name': 'contact'},
         {'title':
              'Добавление записи',
          'url_name':
@@ -28,27 +28,12 @@ class EventsHome(DataMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title='Главная страница')
-        # context = dict(list(context.items()) + list(c_def.items()))
-        # context['menu'] = menu
-        # context['title'] = 'Главная страница'
-        # context['area_selected'] = 0
         return dict(list(context.items()) + list(c_def.items()))
 
     def get_queryset(self):
         return Events.objects.filter(is_published=True)
 
 
-# class AddPost(LoginRequiredMixin, DataMixin, CreateView):
-#     form_class = AddPostForm
-#     template_name = 'event/add_post.html'
-#     context_object_name = 'post'
-#
-#     def get_context_data(self, *, object_list=None, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         c_def = self.get_user_context(title='Добавление записи')
-#         # context['menu'] = menu
-#         # context['title'] = 'Добавление записи'
-#         return dict(list(context.items()) + list(c_def.items()))
 @login_required
 def add_post(request, ):
     if request.method == 'POST':
@@ -127,8 +112,19 @@ def logout_user(request):
     return redirect('home')
 
 
-def contact(request):
-    return render(request, 'event/about.html', {'title': 'Информация о сайте', 'menu': menu})
+class ContactFormView(DataMixin, FormView):
+    form_class = ContactForm
+    template_name = 'event/contact.html'
+    success_url = reverse_lazy('home')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Обратная связь')
+        return dict(list(context.items()) + list(c_def.items()))
+
+    def form_valid(self, form):
+        print(form.cleaned_data)
+        return redirect('home')
 
 
 def about(request):
@@ -143,5 +139,3 @@ def archive(request, year):
 
 def pageNotFound(request, exception):
     return HttpResponseNotFound('Страница не найдена')
-
-

@@ -1,8 +1,7 @@
 from django.db.models import Count
-
 from .models import *
-
-menu = [{'title': 'Главная', 'url_name': 'home'}, {'title': 'О сайте', 'url_name': 'about'},
+from django.core.cache import cache
+menu = [{'title': 'Главная', 'url_name': 'home'}, {'title': 'О сайте', 'url_name': 'contact'},
         {'title':
              'Добавление записи',
          'url_name':
@@ -10,9 +9,12 @@ menu = [{'title': 'Главная', 'url_name': 'home'}, {'title': 'О сайт�
 
 
 class DataMixin:
-    paginate_by = 5
+    # paginate_by = 5
     def get_user_context(self, **kwargs):
-        cats = Area.objects.annotate(Count('events'))
+        cats = cache.get('cats')
+        if not cats:
+            cats = Area.objects.annotate(Count('events'))
+            cache.set('cats', cats, 60)
 
         user_menu = menu.copy()
         if not self.request.user.is_authenticated:

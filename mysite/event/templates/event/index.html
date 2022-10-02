@@ -2,6 +2,7 @@
 {% load event_tags %}
 {% block content %}
 <h1>{{ title }}</h1>
+
 <ul>
     <td valign="top" class="left-chapters">
         <ul id="leftachapters">
@@ -12,13 +13,14 @@
             {% endif %}
             {% for i in cats %}
             {% if i.events__count > 0 %}
-                {% if i.pk == area_selected %}
+            {% if i.pk == area_selected %}
             <li class="selected">{{ i.name }}</li>
             {% else %}
-            <li><a href="{{i.get_absolute_url }}">{{ i.name }}</a> </li>
+            <li><a href="{{i.get_absolute_url }}">{{ i.name }}</a></li>
             {% endif %}
             {% endif %}
             {% endfor %}
+
         </ul>
 
     </td>
